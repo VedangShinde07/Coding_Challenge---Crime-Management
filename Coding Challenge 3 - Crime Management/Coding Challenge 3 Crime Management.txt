@@ -52,17 +52,28 @@ INSERT INTO Crime (CrimeID, IncidentType, IncidentDate, Location, Description, S
 VALUES (1, 'Robbery', '2023-09-15', '123 Main St, Cityville', 'Armed robbery at a convenience store', 'Open'), 
 (2, 'Homicide', '2023-09-20', '456 Elm St, Townsville', 'Investigation into a murder case', 'Under Investigation'),
 (3, 'Theft', '2023-09-10', '789 Oak St, Villagetown', 'Shoplifting incident at a mall', 'Closed'); 
+(4, 'Assault', '2023-09-25', '101 Pine St, Rivertown', 'Physical altercation at a bar', 'Open'),
+ (5, 'Burglary', '2023-09-28', '202 Cedar St, Forestville', 'Residential burglary', 'Closed'),
+ (6, 'Vandalism', '2023-09-18', '303 Maple St, Suburbtown', 'Graffiti on public property', 'Open'),
+ (7, 'Fraud', '2023-09-12', '404 Birch St, Metrocity', 'Identity theft and credit card fraud', 'Under Investigation');
 
 INSERT INTO Victim (VictimID, CrimeID, Name, ContactInfo, Injuries) 
 VALUES (1, 1, 'John Doe', 'johndoe@example.com', 'Minor injuries'), 
 (2, 2, 'Jane Smith', 'janesmith@example.com', 'Deceased'), 
 (3, 3, 'Alice Johnson', 'alicejohnson@example.com', 'None'); 
+(4, 4, 'Bob Williams', 'bobwilliams@example.com', 'Broken arm', '1987-08-15', 37),
+(5, 5, 'Karen Davis', 'karendavis@example.com', 'None', '1979-04-22', 45),
+(6, 6, 'Tom Brown', 'tombrown@example.com', 'None', '1990-11-30', 33),
+(7, 7, 'Linda Green', 'lindagreen@example.com', 'Financial loss', '1985-02-05', 39);
 
 INSERT INTO Suspect (SuspectID, CrimeID, Name, Description, CriminalHistory) 
 VALUES (1, 1, 'Robber 1', 'Armed and masked robber', 'Previous robbery convictions'), 
 (2, 2, 'Unknown', 'Investigation ongoing', NULL), 
 (3, 3, 'Suspect 1', 'Shoplifting suspect', 'Prior shoplifting arrests');
-
+(4, 4, 'Assailant 1', 'Suspect in a bar fight', 'Previous assault charges', '1985-12-05', 38),
+(5, 5, 'Burglar 1', 'Suspected of breaking into homes', 'Prior burglary convictions', '1983-07-19', 41),
+(6, 6, 'Vandal 1', 'Suspected of defacing public property', 'Previous vandalism charges', '1992-09-10', 32),
+(7, 7, 'Fraudster 1', 'Identity theft suspect', 'Previous fraud convictions', '1988-01-15', 36);
 
 Q.1. Select All Open Incidents:
 -> SELECT * FROM Crime WHERE Status = 'Open';
@@ -122,11 +133,7 @@ SELECT Name FROM Suspect JOIN Crime ON Suspect.CrimeID = Crime.CrimeID
 WHERE Status = 'Open';
 
 Q.10. List incident types where there are persons aged 30 or 35 involved.
--> 	SELECT DISTINCT C.IncidentType
-FROM Crime C
-LEFT JOIN Victim V ON C.CrimeID = V.CrimeID
-LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID
-WHERE (V.AGE IN (30, 35)) OR (S.AGE IN (30, 35));
+-> 	
 
 Q.11. Find persons involved in incidents of the same type as 'Robbery':
 -> 	SELECT Name FROM Victim 
@@ -175,16 +182,12 @@ ON C.CrimeID = S.CrimeID
 WHERE S.SuspectID IS NULL;
 
 Q.18. List all cases where at least one incident is of type 'Homicide' and all other incidents are of type 'Robbery':
--> 	SELECT * 
-FROM Crime
-WHERE IncidentType = 'Homicide'
-OR IncidentType = 'Robbery'
-GROUP BY CrimeID
-HAVING SUM(CASE WHEN IncidentType = 'Homicide' THEN 1 ELSE 0 END) > 0
-AND SUM(CASE WHEN IncidentType != 'Robbery' THEN 1 ELSE 0 END) = 0; 
+-> 	
 
 Q.19. Retrieve a list of all incidents and the associated suspects, showing suspects for each incident, or 'No Suspect' if there are none:
-->
+-> SELECT C.*, COALESCE(S.Name, 'No Suspect') AS SuspectName
+FROM Crime C
+LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID;
 
 
 Q.20. List all suspects who have been involved in incidents with incident types 'Robbery' or 'Assault':
