@@ -31,21 +31,29 @@ ALTER TABLE Victim ADD COLUMN AGE INT;
 ALTER TABLE Suspect ADD COLUMN AGE INT;
 
 
-UPDATE Victim SET DOB = '1985-05-15' WHERE VictimID = 1;
-UPDATE Victim SET DOB = '1979-09-20' WHERE VictimID = 2;
-UPDATE Victim SET DOB = '1995-03-10' WHERE VictimID = 3;
+UPDATE Victim SET DOB = '1985-05-15', AGE = 39 WHERE VictimID = 1;
+UPDATE Victim SET DOB = '1979-09-20', AGE = 45 WHERE VictimID = 2;
+UPDATE Victim SET DOB = '1995-03-10', AGE = 28 WHERE VictimID = 3;
+UPDATE Victim SET DOB = '1987-08-15', AGE = 37 WHERE VictimID = 4;
+UPDATE Victim SET DOB = '1979-04-22', AGE = 45 WHERE VictimID = 5;
+UPDATE Victim SET DOB = '1990-11-30', AGE = 33 WHERE VictimID = 6;
+UPDATE Victim SET DOB = '1985-02-15', AGE = 39 WHERE VictimID = 7;
+
+UPDATE Suspect SET DOB = '1980-11-22', AGE = 44 WHERE SuspectID = 1;
+UPDATE Suspect SET DOB = '1990-08-30', AGE = 34 WHERE SuspectID = 2;
+UPDATE Suspect SET DOB = '1989-06-12', AGE = 35 WHERE SuspectID = 3;
+UPDATE Suspect SET DOB = '1985-12-05', AGE = 38 WHERE SuspectID = 4;
+UPDATE Suspect SET DOB = '1983-07-19', AGE = 41 WHERE SuspectID = 5;
+UPDATE Suspect SET DOB = '1992-09-10', AGE = 32 WHERE SuspectID = 6;
+UPDATE Suspect SET DOB = '1988-01-15', AGE = 36 WHERE SuspectID = 7;
 
 UPDATE Suspect SET DOB = '1980-11-22' WHERE SuspectID = 1;
 UPDATE Suspect SET DOB = '1990-08-30' WHERE SuspectID = 2;
 UPDATE Suspect SET DOB = '1989-06-12' WHERE SuspectID = 3;
 
-UPDATE Victim SET AGE = 39 WHERE VictimID = 1;
-UPDATE Victim SET AGE = 45 WHERE VictimID = 2;
-UPDATE Victim SET AGE = 28 WHERE VictimID = 3;
+ 
 
-UPDATE Victim SET AGE = 39 WHERE VictimID = 1;
-UPDATE Victim SET AGE = 45 WHERE VictimID = 2;
-UPDATE Victim SET AGE = 28 WHERE VictimID = 3;
+
 
 INSERTED VALUES IN TABLES:
 INSERT INTO Crime (CrimeID, IncidentType, IncidentDate, Location, Description, Status) 
