@@ -24,12 +24,6 @@ CriminalHistory TEXT,
 FOREIGN KEY (CrimeID) REFERENCES Crime(CrimeID) ); 
 
 
-
-
-
- 
-
-
 INSERTED VALUES IN TABLES:
 INSERT INTO Crime (CrimeID, IncidentType, IncidentDate, Location, Description, Status) 
 VALUES (1, 'Robbery', '2023-09-15', '123 Main St, Cityville', 'Armed robbery at a convenience store', 'Open'), 
