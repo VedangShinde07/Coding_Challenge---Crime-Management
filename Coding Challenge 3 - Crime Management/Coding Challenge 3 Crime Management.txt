@@ -25,27 +25,7 @@ FOREIGN KEY (CrimeID) REFERENCES Crime(CrimeID) );
 
 
 
-ALTER TABLE Victim ADD COLUMN DOB DATE
-ALTER TABLE Suspect ADD COLUMN DOB DATE;
-ALTER TABLE Victim ADD COLUMN AGE INT;
-ALTER TABLE Suspect ADD COLUMN AGE INT;
 
-
-UPDATE Victim SET DOB = '1985-05-15', AGE = 39 WHERE VictimID = 1;
-UPDATE Victim SET DOB = '1979-09-20', AGE = 45 WHERE VictimID = 2;
-UPDATE Victim SET DOB = '1995-03-10', AGE = 28 WHERE VictimID = 3;
-UPDATE Victim SET DOB = '1987-08-15', AGE = 37 WHERE VictimID = 4;
-UPDATE Victim SET DOB = '1979-04-22', AGE = 45 WHERE VictimID = 5;
-UPDATE Victim SET DOB = '1990-11-30', AGE = 33 WHERE VictimID = 6;
-UPDATE Victim SET DOB = '1985-02-15', AGE = 39 WHERE VictimID = 7;
-
-UPDATE Suspect SET DOB = '1980-11-22', AGE = 44 WHERE SuspectID = 1;
-UPDATE Suspect SET DOB = '1990-08-30', AGE = 34 WHERE SuspectID = 2;
-UPDATE Suspect SET DOB = '1989-06-12', AGE = 35 WHERE SuspectID = 3;
-UPDATE Suspect SET DOB = '1985-12-05', AGE = 38 WHERE SuspectID = 4;
-UPDATE Suspect SET DOB = '1983-07-19', AGE = 41 WHERE SuspectID = 5;
-UPDATE Suspect SET DOB = '1992-09-10', AGE = 32 WHERE SuspectID = 6;
-UPDATE Suspect SET DOB = '1988-01-15', AGE = 36 WHERE SuspectID = 7;
 
  
 
@@ -73,10 +53,32 @@ INSERT INTO Suspect (SuspectID, CrimeID, Name, Description, CriminalHistory)
 VALUES (1, 1, 'Robber 1', 'Armed and masked robber', 'Previous robbery convictions'), 
 (2, 2, 'Unknown', 'Investigation ongoing', NULL), 
 (3, 3, 'Suspect 1', 'Shoplifting suspect', 'Prior shoplifting arrests');
-(4, 4, 'Assailant 1', 'Suspect in a bar fight', 'Previous assault charges', '1985-12-05', 38),
-(5, 5, 'Burglar 1', 'Suspected of breaking into homes', 'Prior burglary convictions', '1983-07-19', 41),
-(6, 6, 'Vandal 1', 'Suspected of defacing public property', 'Previous vandalism charges', '1992-09-10', 32),
-(7, 7, 'Fraudster 1', 'Identity theft suspect', 'Previous fraud convictions', '1988-01-15', 36);
+(4, 4, 'Assailant 1', 'Suspect in a bar fight', 'Previous assault charges'),
+(5, 5, 'Burglar 1', 'Suspected of breaking into homes', 'Prior burglary convictions'),
+(6, 6, 'Vandal 1', 'Suspected of defacing public property', 'Previous vandalism charges'),
+(7, 7, 'Fraudster 1', 'Identity theft suspect', 'Previous fraud convictions');
+
+ALTER TABLE Victim ADD COLUMN DOB DATE
+ALTER TABLE Suspect ADD COLUMN DOB DATE;
+ALTER TABLE Victim ADD COLUMN AGE INT;
+ALTER TABLE Suspect ADD COLUMN AGE INT;
+
+
+UPDATE Victim SET DOB = '1985-05-15', AGE = 39 WHERE VictimID = 1;
+UPDATE Victim SET DOB = '1979-09-20', AGE = 45 WHERE VictimID = 2;
+UPDATE Victim SET DOB = '1995-03-10', AGE = 28 WHERE VictimID = 3;
+UPDATE Victim SET DOB = '1987-08-15', AGE = 37 WHERE VictimID = 4;
+UPDATE Victim SET DOB = '1979-04-22', AGE = 45 WHERE VictimID = 5;
+UPDATE Victim SET DOB = '1990-11-30', AGE = 33 WHERE VictimID = 6;
+UPDATE Victim SET DOB = '1985-02-15', AGE = 39 WHERE VictimID = 7;
+
+UPDATE Suspect SET DOB = '1980-11-22', AGE = 44 WHERE SuspectID = 1;
+UPDATE Suspect SET DOB = '1990-08-30', AGE = 34 WHERE SuspectID = 2;
+UPDATE Suspect SET DOB = '1989-06-12', AGE = 35 WHERE SuspectID = 3;
+UPDATE Suspect SET DOB = '1985-12-05', AGE = 38 WHERE SuspectID = 4;
+UPDATE Suspect SET DOB = '1983-07-19', AGE = 41 WHERE SuspectID = 5;
+UPDATE Suspect SET DOB = '1992-09-10', AGE = 32 WHERE SuspectID = 6;
+UPDATE Suspect SET DOB = '1988-01-15', AGE = 36 WHERE SuspectID = 7;
 
 Q.1. Select All Open Incidents:
 -> SELECT * FROM Crime WHERE Status = 'Open';
