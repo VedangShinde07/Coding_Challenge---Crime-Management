@@ -218,7 +218,18 @@ WHERE C.Status IN ('Open', 'Closed');
 
 
 Q.10. List incident types where there are persons aged 30 or 35 involved.
--> 	
+-> 	SELECT DISTINCT C.IncidentType
+FROM Crime C
+LEFT JOIN Victim V ON C.CrimeID = V.CrimeID
+LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID
+WHERE V.AGE IN (30, 35) OR S.AGE IN (30, 35);
+
+
++--------------+
+| IncidentType |
++--------------+
+| Theft        |
++--------------+
 
 Q.11. Find persons involved in incidents of the same type as 'Robbery':
 -> 	SELECT Name FROM Victim 
@@ -306,6 +317,21 @@ Empty set (0.00 sec)
 
 Q.18. List all cases where at least one incident is of type 'Homicide' and all other incidents are of type 'Robbery':
 -> 	
+
+SELECT CrimeID, IncidentType
+FROM Crime
+WHERE IncidentType = 'Homicide'
+UNION
+SELECT CrimeID, IncidentType
+FROM Crime
+WHERE IncidentType = 'Robbery';
+
++---------+--------------+
+| CrimeID | IncidentType |
++---------+--------------+
+|       2 | Homicide     |
+|       1 | Robbery      |
++---------+--------------+
 
 Q.19. Retrieve a list of all incidents and the associated suspects, showing suspects for each incident, or 'No Suspect' if there are none:
 -> SELECT C.*, COALESCE(S.Name, 'No Suspect') AS SuspectName
