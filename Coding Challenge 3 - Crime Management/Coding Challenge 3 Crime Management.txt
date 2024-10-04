@@ -77,16 +77,51 @@ UPDATE Suspect SET DOB = '1988-01-15', AGE = 36 WHERE SuspectID = 7;
 Q.1. Select All Open Incidents:
 -> SELECT * FROM Crime WHERE Status = 'Open';
 
++---------+--------------+--------------+--------------------------+--------------------------------------+--------+
+| CrimeID | IncidentType | IncidentDate | Location                 | Description                          | Status |
++---------+--------------+--------------+--------------------------+--------------------------------------+--------+
+|       1 | Robbery      | 2023-09-15   | 123 Main St, CityVille   | Armed robbery at a convenience store | Open   |
+|       4 | Assault      | 2023-09-25   | 101 Pine St, Rivertown   | Physical altercation at a bar        | Open   |
+|       6 | Vandalism    | 2023-09-18   | 303 Maple St, Suburbtown | Graffiti on public property          | Open   |
++---------+--------------+--------------+--------------------------+--------------------------------------+--------+
+
 Q.2. Find the Total number of incidents:
 -> SELECT COUNT(*) AS TotalIncidents FROM CRIME;
 
++----------------+
+| TotalIncidents |
++----------------+
+|              7 |
++----------------+
+
+
 Q.3. List all unique incident types:
 -> SELECT DISTINCT(IncidentType) FROM Crime;
+
++--------------+
+| IncidentType |
++--------------+
+| Robbery      |
+| Homicide     |
+| Theft        |
+| Assault      |
+| Burglary     |
+| Vandalism    |
+| Fraud        |
++--------------+
+
 
 Q.4. Retrieve incidents that occurred between '2023-09-01' and '2023-09-10'.
 -> 	SELECT IncidentType 
 FROM Crime
  WHERE IncidentDate BETWEEN '2023-09-01' AND '2023-09-10';
+
++--------------+
+| IncidentType |
++--------------+
+| Theft        |
++--------------+
+
 Q.5. List persons involved in incidents in descending order of age.
 -> 	SELECT Name , AGE 
 FROM suspect
@@ -95,6 +130,26 @@ SELECT Name , AGE
 FROM victim
 ORDER BY AGE DESC;
 
++---------------+------+
+| Name          | AGE  |
++---------------+------+
+| Jane Smith    |   45 |
+| Karen Davis   |   45 |
+| Robber 1      |   44 |
+| Burglar 1     |   41 |
+| John Doe      |   39 |
+| Linda Green   |   39 |
+| Assailant 1   |   38 |
+| Bob Williams  |   37 |
+| Fraudster 1   |   36 |
+| Suspect 1     |   35 |
+| Unknown       |   34 |
+| Tom Brown     |   33 |
+| Vandal 1      |   32 |
+| Alice Johnson |   28 |
++---------------+------+
+
+
 Q.6.  Find the average age of persons involved in incidents.
 -> 	SELECT AVG(AGE)
 FROM Victim
@@ -102,20 +157,42 @@ UNION ALL
 SELECT AVG(AGE)	
 FROM suspect;
 
++----------+
+| AVG(AGE) |
++----------+
+|  38.0000 |
+|  37.1429 |
++----------+
+
 
 Q.7. List incident types and their counts, only for open cases.
 -> 	SELECT IncidentType, COUNT(*) AS IncidentCount 
 FROM Crime 
 WHERE Status = 'Open' GROUP BY IncidentType;
 
++--------------+---------------+
+| IncidentType | IncidentCount |
++--------------+---------------+
+| Robbery      |             1 |
+| Assault      |             1 |
+| Vandalism    |             1 |
++--------------+---------------+
+
+
 Q.8. Find persons with names containing 'Doe'.
--> 	SELECT Name FROM Victim 
-WHERE Name LIKE '%Doe%' 
-UNION SELECT 
-Name FROM Suspect WHERE Name LIKE '%Doe%';
+-> 	SELECT Name FROM Victim WHERE Name LIKE '%Doe%' 
+UNION 
+SELECT Name FROM Suspect WHERE Name LIKE '%Doe%';
+
++----------+
+| Name     |
++----------+
+| John Doe |
++----------+
 
 Q.9. Retrieve the names of persons involved in open cases and closed cases:
--> 	FOR STATUS = CLOSED
+-> 	FOR STATUS = 'CLOSED'
+
 SELECT Name FROM Victim 
 JOIN Crime ON Victim.CrimeID = Crime.CrimeID 
 WHERE Status = 'Closed' 
@@ -123,13 +200,35 @@ UNION
 SELECT Name FROM Suspect JOIN Crime ON Suspect.CrimeID = Crime.CrimeID 
 WHERE Status = 'Closed';
 
++---------------+
+| Name          |
++---------------+
+| Alice Johnson |
+| Karen Davis   |
+| Suspect 1     |
+| Burglar 1     |
++---------------+
+
 FOR STATUS = OPEN
+
 SELECT Name FROM Victim 
 JOIN Crime ON Victim.CrimeID = Crime.CrimeID 
 WHERE Status = 'Open' 
 UNION 
 SELECT Name FROM Suspect JOIN Crime ON Suspect.CrimeID = Crime.CrimeID 
 WHERE Status = 'Open';
+
++--------------+
+| Name         |
++--------------+
+| John Doe     |
+| Bob Williams |
+| Tom Brown    |
+| Robber 1     |
+| Assailant 1  |
+| Vandal 1     |
++--------------+
+
 
 Q.10. List incident types where there are persons aged 30 or 35 involved.
 -> 	
@@ -142,6 +241,13 @@ UNION
 SELECT Name FROM Suspect JOIN Crime ON Suspect.CrimeID = Crime.CrimeID 
 WHERE IncidentType = 'Robbery';
 
++----------+
+| Name     |
++----------+
+| John Doe |
+| Robber 1 |
++----------+
+
 Q.12. List incident types with more than one open case:
 -> 	SELECT IncidentType, COUNT(*) AS CaseCount
 FROM Crime
@@ -149,17 +255,35 @@ WHERE Status = 'Open'
 GROUP BY IncidentType
 HAVING COUNT(*) > 1;
 
+Empty set (0.00 sec)
+
 Q.13. List all incidents with suspects whose names also appear as victims in other incidents:
 ->	SELECT DISTINCT C.*
 FROM Crime C
 JOIN Suspect S ON C.CrimeID = S.CrimeID
 JOIN Victim V ON S.Name = V.Name;
 
+Empty set (0.00 sec)
+
 Q.14. Retrieve all incidents along with victim and suspect details:
 -> 	SELECT C.*, V.Name AS VictimName, S.Name AS SuspectName
 FROM Crime C
 LEFT JOIN Victim V ON C.CrimeID = V.CrimeID
 LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID;
+
++---------+--------------+--------------+---------------------------+--------------------------------------+---------------------+---------------+-------------+
+| CrimeID | IncidentType | IncidentDate | Location                  | Description                          | Status              | VictimName    | SuspectName |
++---------+--------------+--------------+---------------------------+--------------------------------------+---------------------+---------------+-------------+
+|       1 | Robbery      | 2023-09-15   | 123 Main St, CityVille    | Armed robbery at a convenience store | Open                | John Doe      | Robber 1    |
+|       2 | Homicide     | 2023-09-20   | 456 Elm St, TownsVille    | Investigation into a murder case     | Under Investigation | Jane Smith    | Unknown     |
+|       3 | Theft        | 2023-09-10   | 789 Oak St, VillageTown   | Shoplifting incident at a mall       | Closed              | Alice Johnson | Suspect 1   |
+|       4 | Assault      | 2023-09-25   | 101 Pine St, Rivertown    | Physical altercation at a bar        | Open                | Bob Williams  | Assailant 1 |
+|       5 | Burglary     | 2023-09-28   | 202 Cedar St, Forestville | Residential burglary                 | Closed              | Karen Davis   | Burglar 1
+   |
+|       6 | Vandalism    | 2023-09-18   | 303 Maple St, Suburbtown  | Graffiti on public property          | Open                | Tom Brown     | Vandal 1    |
+|       7 | Fraud        | 2023-09-12   | 404 Birch St, Metrocity   | Identity theft and credit card fraud | Under Investigation | Linda Green   | Fraudster 1 |
++---------+--------------+--------------+---------------------------+--------------------------------------+---------------------+---------------+----------
+
 
 Q.15. Find incidents where the suspect is older than any victim:
 -> 	SELECT DISTINCT C.CrimeID, C.IncidentType
@@ -168,17 +292,30 @@ JOIN Victim V ON C.CrimeID = V.CrimeID
 JOIN Suspect S ON C.CrimeID = S.CrimeID
 WHERE S.AGE > V.AGE;
 
++---------+--------------+
+| CrimeID | IncidentType |
++---------+--------------+
+|       1 | Robbery      |
+|       3 | Theft        |
+|       4 | Assault      |
++---------+--------------+
+
+
 Q.16. Find suspects involved in multiple incidents:
 -> 	SELECT Name, COUNT(*) AS IncidentCount
 FROM Suspect
 GROUP BY Name
 HAVING COUNT(*) > 1;
 
+Empty set (0.00 sec)
+
 Q.17. List incidents with no suspects involved:
 -> 	SELECT C.* FROM Crime C 
 LEFT JOIN Suspect S 
 ON C.CrimeID = S.CrimeID 
 WHERE S.SuspectID IS NULL;
+
+Empty set (0.00 sec)
 
 Q.18. List all cases where at least one incident is of type 'Homicide' and all other incidents are of type 'Robbery':
 -> 	
@@ -188,6 +325,17 @@ Q.19. Retrieve a list of all incidents and the associated suspects, showing susp
 FROM Crime C
 LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID;
 
++---------+--------------+--------------+---------------------------+--------------------------------------+---------------------+-------------+
+| CrimeID | IncidentType | IncidentDate | Location                  | Description                          | Status              | SuspectName |
++---------+--------------+--------------+---------------------------+--------------------------------------+---------------------+-------------+
+|       1 | Robbery      | 2023-09-15   | 123 Main St, CityVille    | Armed robbery at a convenience store | Open                | Robber 1    |
+|       2 | Homicide     | 2023-09-20   | 456 Elm St, TownsVille    | Investigation into a murder case     | Under Investigation | Unknown     |
+|       3 | Theft        | 2023-09-10   | 789 Oak St, VillageTown   | Shoplifting incident at a mall       | Closed              | Suspect 1   |
+|       4 | Assault      | 2023-09-25   | 101 Pine St, Rivertown    | Physical altercation at a bar        | Open                | Assailant 1 |
+|       5 | Burglary     | 2023-09-28   | 202 Cedar St, Forestville | Residential burglary                 | Closed              | Burglar 1   |
+|       6 | Vandalism    | 2023-09-18   | 303 Maple St, Suburbtown  | Graffiti on public property          | Open                | Vandal 1    |
+|       7 | Fraud        | 2023-09-12   | 404 Birch St, Metrocity   | Identity theft and credit card fraud | Under Investigation | Fraudster 1 |
++---------+--------------+--------------+---------------------------+--------------------------------------+---------------------+-------------+
 
 Q.20. List all suspects who have been involved in incidents with incident types 'Robbery' or 'Assault':
 -> 	SELECT DISTINCT S.Name
@@ -195,5 +343,11 @@ FROM Suspect S
 JOIN Crime C ON S.CrimeID = C.CrimeID
 WHERE C.IncidentType IN ('Robbery', 'Assault');
 
++-------------+
+| Name        |
++-------------+
+| Robber 1    |
+| Assailant 1 |
++-------------+
 
 
