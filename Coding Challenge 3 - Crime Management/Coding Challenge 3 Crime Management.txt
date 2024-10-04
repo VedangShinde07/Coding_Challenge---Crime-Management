@@ -191,43 +191,30 @@ SELECT Name FROM Suspect WHERE Name LIKE '%Doe%';
 +----------+
 
 Q.9. Retrieve the names of persons involved in open cases and closed cases:
--> 	FOR STATUS = 'CLOSED'
-
-SELECT Name FROM Victim 
-JOIN Crime ON Victim.CrimeID = Crime.CrimeID 
-WHERE Status = 'Closed' 
-UNION 
-SELECT Name FROM Suspect JOIN Crime ON Suspect.CrimeID = Crime.CrimeID 
-WHERE Status = 'Closed';
+-> 	SELECT Name FROM Victim V
+JOIN Crime C ON V.CrimeID = C.CrimeID
+WHERE C.Status IN ('Open', 'Closed')
+UNION
+SELECT Name FROM Suspect S
+JOIN Crime C ON S.CrimeID = C.CrimeID
+WHERE C.Status IN ('Open', 'Closed');
 
 +---------------+
 | Name          |
 +---------------+
+| John Doe      |
 | Alice Johnson |
+| Bob Williams  |
 | Karen Davis   |
+| Tom Brown     |
+| Robber 1      |
 | Suspect 1     |
+| Assailant 1   |
 | Burglar 1     |
+| Vandal 1      |
 +---------------+
 
-FOR STATUS = OPEN
 
-SELECT Name FROM Victim 
-JOIN Crime ON Victim.CrimeID = Crime.CrimeID 
-WHERE Status = 'Open' 
-UNION 
-SELECT Name FROM Suspect JOIN Crime ON Suspect.CrimeID = Crime.CrimeID 
-WHERE Status = 'Open';
-
-+--------------+
-| Name         |
-+--------------+
-| John Doe     |
-| Bob Williams |
-| Tom Brown    |
-| Robber 1     |
-| Assailant 1  |
-| Vandal 1     |
-+--------------+
 
 
 Q.10. List incident types where there are persons aged 30 or 35 involved.
